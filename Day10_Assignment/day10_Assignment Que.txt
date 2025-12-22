@@ -1,0 +1,44 @@
+1) Meaning of the Snort rule
+
+It detects TCP port scanning using SYN packets.
+An alert is generated if 10 packets are sent within 5 seconds.
+
+2) What is IDS?
+
+IDS monitors network traffic continuously.
+It alerts when suspicious activity is detected.
+
+3) Difference between IDS and IPS
+
+IDS only detects and gives alerts.
+IPS detects and blocks attacks automatically.
+
+4) What is Snort?
+
+Snort is an open-source network security tool.
+It works as both IDS and IPS.
+
+5) What is port scanning?
+
+Port scanning checks which ports are open.
+It is used to find running services or weaknesses.
+
+6) What is Nmap used for?
+
+Nmap is a network scanning tool.
+It finds hosts, open ports, and services.
+
+7) What is HOME_NET?
+
+HOME_NET defines the internal network.
+It represents the protected network in Snort.
+
+8) What is a Snort rule?
+
+A Snort rule defines what traffic to detect.
+It tells Snort when to generate alerts.
+
+9) What is SID in Snort?
+
+SID is a unique rule number.
+It is used to identify Snort rules.
