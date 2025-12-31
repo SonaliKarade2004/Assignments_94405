@@ -1,0 +1,136 @@
+Section 1: Application Reconnaissance (Observation Only)
+Task 1: Website Understanding
+1. Open the given website in browser.
+2. Identify:
+Input fields (login, search, forms)
+Ans. The login form contains username and password fields
+     Search bar accepts user input
+
+3. Write:
+Which input looks user-controlled
+Q: Which input looks user-controlled?
+Login fields, search fields
+Q: Why is user input risky?
+ Because attackers can send malicious input like SQL queries or scripts
+
+
+Section 2: SQL Injection (Analysis + Lab Simulation)
+Task 2: SQL Injection Theory
+1. What is SQL Injection?
+SQL Injection is an attack where malicious SQL queries are inserted into input fields to manipulate the database. Its main aim to the run the command and enter in the databse and manipulate the database...
+
+2. Why input validation failure causes SQL Injection?
+Because the application directly executes user input without checking it.
+
+3. Explain the payload:
+' OR '1'='1
+It always evaluates to TRUE and bypasses authentication.
+
+4. What happens at database level when this payload is executed?
+When the payload is entered which where condition is true for the all records in the database.
+
+
+Task 3: SQL Injection – Simulated Practical
+5. Write:
+Why authentication / access was bypassed
+The authentication was bypassed because the application directly used user input in the SQL query without proper validation. When the SQL injection payload was submitted, the database treated the input as part of the SQL command. As a result, the application allowed access without verifying legitimate credentials and displayed the database records.
+
+How the SQL condition became TRUE
+The injected payload ' OR '1'='1 altered the WHERE clause of the SQL query. The condition '1'='1 is always true. Because of the OR operator, the complete SQL condition evaluated to TRUE for all rows in the database. This caused the database to return all user records, which were then displayed on the webpage.
+
+
+Section 3: Other Common Web Attacks
+Task 4: Attack Mapping (Theory Only)
+Attack Type Description Example Payload (Study Only) Impact
+
+SQL Injection =>  An attack where malicious SQL queries are injected into input fields to manipulate the backend database. => ' OR '1'='1 Authentication bypass, data leakage, database manipulation
+Cross-Site Scripting (XSS) => An attack where malicious scripts are injected into web pages and executed in users’ browsers. => <script>alert('XSS')</script> Session hijacking, cookie theft, defacement
+Brute Force =>  An attack that attempts many username and password combinations to gain unauthorized access. => admin:password123 (password list) Account compromise, service disruption
+
+
+Section 4: Logs & Detection (Blue Team Angle)
+Task 5: Log Identification
+1. Which logs would record SQL Injection attempts?
+a) Apache Access Log
+
+The Apache access log records all HTTP requests sent to the web server. SQL Injection attempts appear in this log as suspicious URLs or POST requests containing special characters such as ', OR, or SQL keywords. This log helps identify the attacker’s IP address, request time, and the injected payload.
+
+b) Apache Error Log
+
+The Apache error log records server-side errors generated during request processing. SQL Injection attempts may cause database or syntax errors, which are captured in the error log. This log helps administrators understand how the application failed due to malicious input.
+
+
+Access Log → Shows malicious requests and payloads
+Error Log → Shows SQL/database errors caused by injection
+
+
+Section 4: Logs & Detection (Blue Team Angle)
+Task 6: Brute-force Detection
+
+1. How does a brute-force attack appear in logs?
+A brute-force attack appears in logs as multiple failed login attempts from the same IP address or different IPs within a short period of time. The access log shows repeated requests to the login page with different usernames or passwords. This abnormal pattern indicates an attempt to guess credentials.
+
+2. Which tools help prevent brute-force attacks?
+Brute-force attacks can be prevented using security tools such as Fail2ban, rate limiting mechanisms, Web Application Firewalls (WAF), and CAPTCHAs. These tools detect abnormal login behavior and restrict access automatically.
+
+3. Role of Security Mechanisms
+Fail2ban
+Fail2ban monitors log files for repeated failed login attempts. When suspicious activity is detected, it automatically blocks the attacker’s IP address for a specific period, preventing further login attempts.
+
+Rate Limiting
+Rate limiting restricts the number of requests a user or IP address can make within a defined time frame. This prevents attackers from making unlimited login attempts and slows down brute-force attacks.
+
+
+Section 5: Incident Response Scenario
+Task 7: Incident Response Case Study
+1. Identify the Incident
+Multiple SQL Injection attempts were detected in the Apache access and error logs, indicating an attempted attack on the website database.
+
+2 & 3. Incident Response Phases and Actions
+Identification =>
+Security monitoring identified suspicious SQL keywords and special characters in incoming requests recorded in Apache logs. This confirmed an ongoing SQL Injection attack attempt.
+
+Containment =>
+The attacker’s IP address was temporarily blocked using firewall rules and Fail2ban to prevent further malicious requests. Access to vulnerable endpoints was restricted.
+
+Eradication =>
+The vulnerable code was fixed by removing dynamic SQL queries and implementing prepared statements. Input validation was added to prevent malicious input execution.
+
+Recovery =>
+The web application was tested after applying security fixes. Normal services were restored, and logs were monitored closely to ensure no further attack attempts occurred.
+
+Lessons Learned =>
+The incident highlighted the importance of secure coding practices, continuous log monitoring, and timely patching. Security controls such as WAF and input validation must be implemented to prevent future attacks.
+
+
+Section 6: Attack Intelligence
+Task 8: Attacker Intelligence (Theory)
+haveibeenpwned.com =>
+This website allows users to check whether their email or password has been exposed in known data breaches. It helps users understand the risks of reused or weak passwords.
+
+intelx.io =>
+IntelX is a threat intelligence platform that provides access to leaked data, technical indicators, and digital footprints. It is used by security professionals for investigation and research purposes.
+
+iknowwhatyoudownload.com =>
+This website demonstrates how user activity can be tracked using IP addresses. It shows the privacy risks associated with internet usage and poor security controls.
+
+
+Section 7: Security Mitigations
+Task 9: Prevention Techniques
+
+1. How to prevent SQL Injection?
+SQL Injection can be prevented by using secure coding practices such as prepared statements, input validation, parameterized queries, and regular security testing.
+
+2. Importance of Security Controls
+Prepared Statements =>
+Prepared statements separate SQL code from user input, ensuring that input is treated as data and not executable SQL commands.
+
+Input Validation =>
+Input validation ensures that only expected and safe data formats are accepted by the application, reducing the risk of malicious input.
+
+Web Application Firewall (WAF) =>
+A WAF filters and blocks malicious traffic before it reaches the application, providing an additional layer of security.
+
+3. How logs help in early detection?
+Logs help detect suspicious activities such as repeated failed logins, SQL keywords in requests, and abnormal traffic patterns. Early log analysis allows security teams to respond quickly and prevent serious damage.
+
